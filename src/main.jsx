@@ -7,7 +7,7 @@ import './index.css'
 let router = createBrowserRouter(enrutador);
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  // <StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>,
+  /* </StrictMode>, */
 )
