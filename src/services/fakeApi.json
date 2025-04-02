@@ -1,0 +1,18 @@
+{
+    "usuarios": [
+        {
+            "id": 1,
+            "email": "admin",
+            "password": "admin",
+            "name": "Carlos Franco"
+        },
+        {
+            "id": 2,
+            "email": "admin1",
+            "password": "admin1",
+            "name": "Jesús Perez"
+        }
+    ],
+    "clientes": [],
+    "envios": []
+}

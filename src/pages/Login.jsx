@@ -1,30 +1,17 @@
 import { useState } from 'react';
 import './Login.css'
-import { data, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
 
-    const dataUsers = [
-        {
-            "id": 123,
-            "user": "jj14",
-            "email": "jose@gmail.com",
-            "password": "12345678"
-        },
-        {
-            "id": 124,
-            "user": "carmen",
-            "email": "carmen@gmail.com",
-            "password": "12345678"
-        },
-        {
-            "id": 125,
-            "user": "rodrigo",
-            "email": "rodrigo-mendez@gmail.com",
-            "password": "12345678"
-        },
+    const [usuarios, setUsuarios] = useState([]);
 
-    ]
+    const getUsuarios = () => {
+        fetch('http://localhost:3001/usuarios')
+        .then(response => response.json)
+        .then(data => setUsuarios(data))
+        .catch(error => console.error(error));
+    }
 
 
     const redireccion = useNavigate();
@@ -44,14 +31,15 @@ const Login = () => {
     }
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
-        const {email, password} = formState;
-        if(dataUsers.some(users => users.email === email.trim() && users.password === password.trim())) {
-            redireccion('/home') 
+        const { email, password } = formState;
+        const users = await getUsuarios();
+        if (users.some(users => users.email === email.trim() && users.password === password.trim())) {
+            redireccion('/home')
         } else {
             alert('Error en credenciales');
-        } 
+        }
     }
 
 
