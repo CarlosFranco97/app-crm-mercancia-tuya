@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   alertaGenerica,
@@ -9,13 +9,23 @@ import "./Login.css";
 
 const Login = () => {
   const [usuarios, setUsuarios] = useState([]);
+  const urlUsuarios = 'https://back-json-server-tuya-d419.onrender.com/usuarios';
 
-  // const getUsuarios = () => {
-  //     fetch('http://localhost:3001/usuarios')
-  //     .then(response => response.json)
-  //     .then(data => setUsuarios(data))
-  //     .catch(error => console.error(error));
-  // }
+  const getUsuarios = () => {
+    fetch(urlUsuarios)
+      .then(response => response.json())
+      .then(data => setUsuarios(data))
+      .catch(error => console.error(error))
+  };
+
+  useEffect(() => {
+    getUsuarios();
+  }, []);
+
+  const existeUsuario = () => {
+    return usuarios.find((usuario) => usuario.user === formState.email && usuario.password === formState.password)
+  }
+
 
   const redireccion = useNavigate();
 
@@ -34,11 +44,10 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { email, password } = formState;
-    // const users = getUsuarios();
-    if (email === "admin" && password === "123456") {
+    if (existeUsuario()) {
       const tokenAcceso = generarToken();
       localStorage.setItem('token', tokenAcceso);
+      localStorage.setItem('usuario', JSON.stringify(existeUsuario()));
       alertaRedireccion(
         redireccion,
         "Bienvenido",
@@ -71,7 +80,7 @@ const Login = () => {
         type="password"
       />
 
-      <input value="Login" className="btn" type="submit" />
+      <input onClick={handleSubmit} value="Login" className="btn" type="submit" />
     </form>
   );
 };
